@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<launch>
+    <!-- Call agent bringup node -->
+    <node name="robosar_agent_bringup_launch" pkg="robosar_agent_bringup" type="robosar_agent_bringup_node"/>
+    <!-- Call static transform for base-link to laser -->
+    <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0 0 0 0 0 0 base_link laser 100" />
+
+</launch>

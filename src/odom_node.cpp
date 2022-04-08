@@ -36,6 +36,21 @@ void OdomNode::update_encoders(int enc_left, int enc_right){
   pos_right_ = enc_right;
 }
 
+void OdomNode::reset_odom(){
+  odomNew_.pose.pose.position.z = 0;
+  odomNew_.pose.pose.orientation.x = 0;
+  odomNew_.pose.pose.orientation.y = 0;
+  odomNew_.twist.twist.linear.x = 0;
+  odomNew_.twist.twist.linear.y = 0;
+  odomNew_.twist.twist.linear.z = 0;
+  odomNew_.twist.twist.angular.x = 0;
+  odomNew_.twist.twist.angular.y = 0;
+  odomNew_.twist.twist.angular.z = 0;
+  odomOld_.pose.pose.position.x = 0;
+  odomOld_.pose.pose.position.y = 0;
+  odomOld_.pose.pose.orientation.z = 0;
+}
+
 // Update odomNew, odomOld
 void OdomNode::update_odom()
 {

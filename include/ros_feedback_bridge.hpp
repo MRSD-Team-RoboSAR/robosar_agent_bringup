@@ -7,6 +7,8 @@
 #include <string>
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/UInt32.h>
+#include <std_msgs/String.h>
 #include "robosar.pb.h"
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
@@ -29,6 +31,8 @@ public:
         // Create ROS nodes for this agent
         imu_publisher_ = nh_.advertise<sensor_msgs::Imu>("feedback/IMU", 1, true);
         lrf_publisher_ = nh_.advertise<sensor_msgs::LaserScan>("feedback/scan", 1, true);
+        agent_system_status_publisher_ = nh_.advertise<std_msgs::UInt32>("debug/status", 1, true);
+        agent_system_msg_publisher_ = nh_.advertise<std_msgs::String>("debug/msg", 1, true);
 
         //// Start Odom node
         odom_delay_ms = (int)((1.0/(double)(odom_freq_hz))*1000.0);
@@ -133,6 +137,14 @@ public:
         }
 
         lrf_publisher_.publish(lrf_msg);
+
+        // Agent status and message
+        std_msgs::UInt32 agent_status;
+        agent_status.data = feedback->status_msg_data().status_val();
+        agent_system_status_publisher_.publish(agent_status);
+        std_msgs::String agent_msg;
+        agent_msg.data = feedback->status_msg_data().message();
+        agent_system_msg_publisher_.publish(agent_msg);
     }
 
     void runOdometry()
@@ -159,6 +171,8 @@ private:
     ros::Publisher odom_data_pub_euler;
     ros::Publisher odom_data_pub_quat;
     ros::Publisher lrf_publisher_;
+    ros::Publisher agent_system_status_publisher_;
+    ros::Publisher agent_system_msg_publisher_;
     std::string khepera_frame;
     std::thread odom_thread_;
     bool node_alive_;

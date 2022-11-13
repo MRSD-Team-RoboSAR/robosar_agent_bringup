@@ -16,6 +16,8 @@
 #include <mutex>
 #include "easylogging++.h"
 #include <ros/package.h>
+#include "robosar_messages/reset_odom.h"
+
 class ROSFeedbackBridge
 {
 
@@ -33,6 +35,8 @@ public:
         //// Start Odom node
         odom_delay_ms = (int)((1.0/(double)(odom_freq_hz))*1000.0);
         odom_thread_ = std::thread(&ROSFeedbackBridge::runOdometry, this);
+
+        resetOdomSvc = nh_.advertiseService("reset_odom", &ROSFeedbackBridge::resetOdom, this);
 
         std::string package_path = ros::package::getPath("robosar_agent_bringup");
 
@@ -55,10 +59,6 @@ public:
         logger = el::Loggers::getLogger(robot_id_);
         // default logger uses default configurations
         el::Loggers::reconfigureLogger(robot_id_, agentLogConf);
-
-        logger->info("*************************************************************************");
-        logger->info("All hail lord gupta");
-        logger->info("*************************************************************************");
         
     }
 
@@ -68,6 +68,13 @@ public:
         node_alive_ = false;
         odom_thread_.join();
         el::Loggers::unregisterLogger(rid);
+    }
+
+    bool resetOdom(robosar_messages::reset_odom::Request  &req,
+         robosar_messages::reset_odom::Response &res){
+        odom_node_.reset_odom();
+        res.res = true;
+        return true;
     }
 
     void unpack_feedback_message(robosar_fms::SensorData* feedback) {
@@ -174,6 +181,7 @@ private:
     el::Logger* logger; 
     std::string rid;
     OdomNode odom_node_;
+    ros::ServiceServer resetOdomSvc;
 };
 
 #endif

@@ -20,6 +20,7 @@ public:
     void publish_euler(); // publish euler odom
     void reset();
     nav_msgs::Odometry get_odom(); // get odomNew
+    void reset_odom(); // reset OdomNew, OdomOld
 
 private:
     // Robot id

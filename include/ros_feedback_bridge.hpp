@@ -238,6 +238,7 @@ public:
             {
                 std::lock_guard<std::mutex> guard(mtx);
                 // Update odometry messages
+                std::cout << "Robot ID: " << rid << "\r\n";
                 odom_node_.update_odom();
             }
             // Publish odometry messages

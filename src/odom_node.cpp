@@ -45,7 +45,14 @@ void OdomNode::update_encoders(int enc_left, int enc_right){
 // Update odomNew, odomOld
 void OdomNode::update_odom()
 {
-
+  std::cout << "Before update_odom:\r\n";
+  std::cout << "\tOdom old:\r\n";
+  std::cout << "\t\tx  : " << odomOld_.pose.pose.position.x << "\r\n";
+  std::cout << "\t\ty  : " << odomOld_.pose.pose.position.y << "\r\n";
+  std::cout << "\t\tyaw: " << odomOld_.pose.pose.orientation.z << "\r\n";
+  std::cout << "\t\tt  : " << odomOld_.header.stamp << "\r\n";
+  std::cout << "\tprev enc: " << pos_left_prev_ << ", " << pos_right_prev_ << "\r\n";
+  std::cout << "\tcurr enc: " << pos_left_ << ", " << pos_right_ << "\r\n";
   long delta_pos_left, delta_pos_right;
   float delta_left, delta_right, delta_theta, theta2;
   float delta_x, delta_y;
@@ -99,6 +106,16 @@ void OdomNode::update_odom()
   // Update encoder values
   pos_left_prev_ = pos_left_;
   pos_right_prev_ = pos_right_;
+
+  std::cout << "After update_odom:\r\n";
+  std::cout << "\tOdom old:\r\n";
+  std::cout << "\t\tx  : " << odomOld_.pose.pose.position.x << "\r\n";
+  std::cout << "\t\ty  : " << odomOld_.pose.pose.position.y << "\r\n";
+  std::cout << "\t\tyaw: " << odomOld_.pose.pose.orientation.z << "\r\n";
+  std::cout << "\t\tt  : " << odomOld_.header.stamp << "\r\n";
+  std::cout << "\tprev enc: " << pos_left_prev_ << ", " << pos_right_prev_ << "\r\n";
+  std::cout << "\tcurr enc: " << pos_left_ << ", " << pos_right_ << "\r\n";
+  std::cout << "\r\n";
 }
 
 // Publish the odometry message, euler

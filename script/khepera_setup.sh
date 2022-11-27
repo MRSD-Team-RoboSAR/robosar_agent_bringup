@@ -19,7 +19,7 @@ ssh root@${KHEPERA_IP_ADDRESS} pkill template
 scp ${CODE_PATH} root@${KHEPERA_IP_ADDRESS}:/home/root
 
 # Execute latest khepera code with the right arguments
-ssh root@${KHEPERA_IP_ADDRESS} ./template ${SERVER_IP_ADDRESS} ${CONTROL_PORT} ${FEEDBACK_PORT} ${FEEDBACK_FREQUENCY} ${CONTROL_TIMEOUT}  > /dev/null 2>&1 &
+ssh root@${KHEPERA_IP_ADDRESS} ./template ${SERVER_IP_ADDRESS} ${CONTROL_PORT} ${FEEDBACK_PORT} ${FEEDBACK_FREQUENCY} ${CONTROL_TIMEOUT}  > /home/root/log1.txt &
 
 # Set up camera if enabled
 if [ ${CAMERA_ENABLED} = "1" ]
@@ -27,5 +27,5 @@ then
     scp ${PERCEPTION_CODE_PATH} root@${KHEPERA_IP_ADDRESS}:/home/root
 
     # Run the script 
-    ssh root@${KHEPERA_IP_ADDRESS} ./template_perception > /dev/null 2>&1 &  
+    ssh root@${KHEPERA_IP_ADDRESS} ./template_perception > /home/root/log2.txt &
 fi

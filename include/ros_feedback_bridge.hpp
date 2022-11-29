@@ -194,7 +194,12 @@ public:
 
         for(int i=0;i<apriltag_feedback.tag_detections_size();i++) {
             robosar_fms::AprilTagDetection tag = apriltag_feedback.tag_detections(i);
-
+            if(tag.tag_id() < 1 || tag.tag_id() > 12)
+            {
+              // Error, ignore
+              logger->info("ERROR: Invalid AprilTag ID detected (%v); ignoring", tag.tag_id());
+              continue;
+            }
             logger->info("Apriltag id %v w translation %v %v %v and rotation mat %v %v %v | %v %v %v | %v %v %v",
                             tag.tag_id(), tag.pose().t().x(),tag.pose().t().y(),tag.pose().t().z(), \
                              tag.pose().r().r11(),tag.pose().r().r12(),tag.pose().r().r13(),
